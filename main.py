@@ -10,17 +10,19 @@ pygame.init()
 screen = pygame.display.set_mode((800, 600))
 
 # Background image
-backgroundBig = pygame.image.load("future.gif")
+backgroundBig = pygame.image.load("background.jpg")
 background = pygame.transform.scale(backgroundBig, (800, 600))
 
 # background sound
-mixer.music.load("duff.wav")
+mixer.music.load("Space Invaders - Space Invaders.mp3")
 mixer.music.play(-1)
 
 # Window title and icon
 pygame.display.set_caption("Space Invaders")
 icon = pygame.image.load("ufo.png")
 pygame.display.set_icon(icon)
+
+showLine = True
 
 # Player
 playerImg = pygame.image.load("player.png")
@@ -76,7 +78,6 @@ def game_over_text():
 def player(x, y):
     screen.blit(playerImg, (x, y))
 
-
 def enemy(x, y, i):
     screen.blit(enemyImg[i], (x, y))
 
@@ -114,7 +115,7 @@ while running:
                 playerX_change = 0.3
             if event.key == pygame.K_SPACE:
                 if bullet_state == "ready":
-                    bullet_Sound = mixer.Sound("god1.wav")
+                    bullet_Sound = mixer.Sound("blaster.wav")
                     bullet_Sound.play()
                     # Get the current x coordinate of the spaceship
                     bulletX = playerX
@@ -137,9 +138,10 @@ while running:
     for i in range(num_of_enemies):
 
         # Game Over
-        if enemyY[i] > 440:
+        if enemyY[i] > 220:
             for j in range(num_of_enemies):
                 enemyY[j] = 2000
+            showLine = False
             game_over_text()
             break
 
@@ -178,5 +180,8 @@ while running:
     player(playerX, playerY)
     # Draw the enemy
     show_score(textX, textY)
+
+    if showLine:
+        pygame.draw.line(screen, (255, 0, 0), (0, 270), (800, 270))
 
     pygame.display.update()
